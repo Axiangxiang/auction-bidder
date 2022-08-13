@@ -10,12 +10,12 @@ spring:
     hikari:
       maximum-pool-size: 100
       minimum-idle: 50
-    url: jdbc:mysql://localhost:60000/order_ticket?characterEncoding=utf8
+    url: jdbc:mysql://localhost:60000/auction_bidder?characterEncoding=utf8
   boot:
     mariadb4j:
       databaseName: otr_part_purchase
   flyway:
-    locations: classpath:db/migration,classpath:db/data
+    locations: classpath:db/migration
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     serialization:

@@ -2,7 +2,7 @@ spring:
   application:
     name: auction-bidder
   datasource:
-    url: jdbc:mysql://localhost:3306/auction-bidder?characterEncoding=utf8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/auction_bidder?characterEncoding=utf8&serverTimezone=UTC
     name: auction-bidder
     initial-size: 10
     max-active: 250
@@ -28,7 +28,7 @@ spring:
     username: guest
     password: guest
   flyway:
-    locations: classpath:db/migration,classpath:db/data
+    locations: classpath:db/migration
 
 feign:
   auction-storage:
