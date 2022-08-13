@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: auction-bidder
+  datasource:
+    url: jdbc:mysql://localhost:3306/auction-bidder?characterEncoding=utf8&serverTimezone=UTC
+    name: auction-bidder
+    initial-size: 10
+    max-active: 250
+    max-wait: 1000
+    min-idle: 10
+    test-on-borrow: true
+    validation-query: SELECT 1
+    username: root
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: validate
+        jdbc:
+          batch_size: 20
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+  flyway:
+    locations: classpath:db/migration,classpath:db/data
+
+feign:
+  auction-storage:
+    name: auction-storage-management
+    url: http://auction-storage-management:8080
+
