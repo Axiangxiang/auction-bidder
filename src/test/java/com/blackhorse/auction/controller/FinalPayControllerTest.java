@@ -30,7 +30,7 @@ public class FinalPayControllerTest extends TestBase {
 
     @Test
     void should_return_success_when_pay_final_amount_given_correct_amount() throws Exception {
-        Integer bid = 1;
+        String bid = "111";
         FinalPayRequestDTO requestDTO = FinalPayRequestDTO.builder().finalAmount(new BigDecimal(50000)).build();
         String requestJson = objectMapper.writeValueAsString(requestDTO);
 

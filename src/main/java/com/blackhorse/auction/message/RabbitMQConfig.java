@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+    public static final String EXCHANGE_NAME = "take-goods-excahnge";
+    public static final String ROUNTING_KEY = "take-goods-rounting-key";
+
     @Bean("directExchange")
     public Exchange directExchange() {
         return ExchangeBuilder.directExchange("amq.direct").durable(true).build();

@@ -19,7 +19,7 @@ public class FinalPayController {
 
     @PostMapping("/{bid}/final-payment-request/confirmation")
     public ResponseEntity<FinalPayResponseDTO<String>> finalPay(@PathVariable String bid, @RequestBody FinalPayRequestDTO finalPayRequestDTO) {
-        finalPayService.finalPay(bid, finalPayRequestDTO);
+        finalPayService.payFinalAmount(bid, finalPayRequestDTO);
         return ResponseEntity.ok().body(new FinalPayResponseDTO<String>(200, ""));
     }
 }
