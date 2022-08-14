@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FinalPayResponseDTO<T> {
-    private Integer status;
-    private T data;
+public class FinalPayResponseDTO {
+    private String code;
+    private String message;
 }
