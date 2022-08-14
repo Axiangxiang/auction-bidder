@@ -11,27 +11,28 @@ import com.blackhorse.auction.repository.BidderContractRepository;
 import com.blackhorse.auction.repository.BidderPayRecordRepository;
 import com.blackhorse.auction.repository.entity.BidderContract;
 import com.blackhorse.auction.repository.entity.BidderPayRecord;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FinalPayService {
     private final BidderContractRepository bidderContractRepository;
     private final BidderPayRecordRepository bidderPayRecordRepository;
     private final PayClient payClient;
     private final TakeGoodsMessageSender takeGoodsMessageSender;
+    private final AuctionStorageClient auctionStorageClient;
 
     public void payFinalAmount(String bid, FinalPayRequestDTO finalPayRequestDTO) {
         BidderContract bidderContract = bidderContractRepository.findByContractNo(bid);
         if (bidderContract != null) {
             pay(finalPayRequestDTO.getFinalAmount());
             savePayRecord(PayType.FINAL, finalPayRequestDTO.getFinalAmount(), bid);
-            takeGoodsMessageSender.send(new TakeGoodsMessage(bidderContract.getAuctionStorageContractNo()));
+            takeGoods(bidderContract.getContractNo());
         }
     }
 
@@ -49,5 +50,14 @@ public class FinalPayService {
                 .contractNo(contractNo)
                 .build();
         bidderPayRecordRepository.save(bidderPayRecord);
+    }
+
+    private void takeGoods(String auctionStorageContractNo) {
+        try {
+            auctionStorageClient.takeGoods(auctionStorageContractNo);
+        } catch (Exception e) {
+            log.error("call take goods api error: {}", e.getMessage(), e);
+            takeGoodsMessageSender.send(new TakeGoodsMessage(auctionStorageContractNo));
+        }
     }
 }

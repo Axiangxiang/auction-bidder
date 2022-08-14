@@ -34,4 +34,7 @@ feign:
   auction-storage:
     name: auction-storage-management
     url: http://auction-storage-management:8080
+  pay:
+    name: pay-management
+    url: http://pay-management:8080
 

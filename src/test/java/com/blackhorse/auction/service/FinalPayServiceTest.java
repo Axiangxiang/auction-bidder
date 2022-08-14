@@ -1,5 +1,6 @@
 package com.blackhorse.auction.service;
 
+import com.blackhorse.auction.client.AuctionStorageClient;
 import com.blackhorse.auction.client.PayClient;
 import com.blackhorse.auction.controller.DTO.FinalPayRequestDTO;
 import com.blackhorse.auction.message.TakeGoodsMessageSender;
@@ -23,7 +24,8 @@ public class FinalPayServiceTest {
         BidderPayRecordRepository bidderPayRecordRepository = Mockito.mock(BidderPayRecordRepository.class);
         PayClient payClient = Mockito.mock(PayClient.class);
         TakeGoodsMessageSender takeGoodsMessageSender = Mockito.mock(TakeGoodsMessageSender.class);
-        FinalPayService finalPayService = new FinalPayService(bidderContractRepository, bidderPayRecordRepository, payClient, takeGoodsMessageSender);
+        AuctionStorageClient auctionStorageClient = Mockito.mock(AuctionStorageClient.class);
+        FinalPayService finalPayService = new FinalPayService(bidderContractRepository, bidderPayRecordRepository, payClient, takeGoodsMessageSender, auctionStorageClient);
         BidderContract bidderContract = BidderContract.builder()
                 .contractNo("111")
                 .finalAmount(new BigDecimal(50000))
@@ -32,6 +34,7 @@ public class FinalPayServiceTest {
         Mockito.when(bidderContractRepository.findByContractNo(any())).thenReturn(bidderContract);
         finalPayService.payFinalAmount(bidderContract.getContractNo(), FinalPayRequestDTO.builder().finalAmount(bidderContract.getFinalAmount()).build());
         verify(bidderPayRecordRepository, times(1)).save(any());
-        verify(takeGoodsMessageSender, times(1)).send(any());
+        verify(auctionStorageClient, times(1)).takeGoods(any());
+        verify(takeGoodsMessageSender, times(0)).send(any());
     }
 }
