@@ -1,5 +1,6 @@
 package com.blackhorse.auction.controller;
 
+import com.blackhorse.auction.client.AuctionStorageClient;
 import com.blackhorse.auction.configuration.TestBase;
 import com.blackhorse.auction.controller.DTO.FinalPayRequestDTO;
 import com.blackhorse.auction.exception.BusinessException;
