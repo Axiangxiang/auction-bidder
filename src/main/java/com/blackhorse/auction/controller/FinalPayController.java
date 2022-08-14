@@ -26,11 +26,11 @@ public class FinalPayController {
             finalPayService.payFinalAmount(bid, finalPayRequestDTO);
         } catch (BusinessException e) {
             finalPayResponseDTO.setCode("fail");
-            finalPayResponseDTO.setMessage("amount not match");
+            finalPayResponseDTO.setMessage(e.getMessage());
             return ResponseEntity.badRequest().body(new ResponseDTO<FinalPayResponseDTO>(400, finalPayResponseDTO));
         } catch (Exception e) {
             finalPayResponseDTO.setCode("fail");
-            finalPayResponseDTO.setMessage("system error");
+            finalPayResponseDTO.setMessage(e.getMessage());
             return ResponseEntity.internalServerError().body(new ResponseDTO<FinalPayResponseDTO>(500, finalPayResponseDTO));
         }
         finalPayResponseDTO.setCode("success");

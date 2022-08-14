@@ -4,6 +4,7 @@ import com.blackhorse.auction.client.AuctionStorageClient;
 import com.blackhorse.auction.client.PayClient;
 import com.blackhorse.auction.controller.DTO.FinalPayRequestDTO;
 import com.blackhorse.auction.enums.PayType;
+import com.blackhorse.auction.exception.BusinessException;
 import com.blackhorse.auction.message.TakeGoodsMessageSender;
 import com.blackhorse.auction.model.PayRequest;
 import com.blackhorse.auction.model.TakeGoodsMessage;
@@ -30,6 +31,9 @@ public class FinalPayService {
     public void payFinalAmount(String bid, FinalPayRequestDTO finalPayRequestDTO) {
         BidderContract bidderContract = bidderContractRepository.findByContractNo(bid);
         if (bidderContract != null) {
+            if (bidderContract.getFinalAmount().compareTo(finalPayRequestDTO.getFinalAmount()) != 0) {
+                throw new BusinessException("amount not match");
+            }
             pay(finalPayRequestDTO.getFinalAmount());
             savePayRecord(PayType.FINAL, finalPayRequestDTO.getFinalAmount(), bid);
             takeGoods(bidderContract.getContractNo());
